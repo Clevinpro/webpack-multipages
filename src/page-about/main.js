@@ -1,5 +1,4 @@
-// require('normalize.css/normalize.scss')
-import '../css/main.scss';
+import '../scss/main.scss';
 import './page.scss';
 import list from './list.hbs';
 
