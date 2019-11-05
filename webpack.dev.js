@@ -43,23 +43,48 @@ module.exports = {
         ]
       },
       {
-        // Load all images as base64 encoding if they are smaller than 8192 bytes
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(gif|png|jpe?g|svg|jpg)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
-              // On development we want to see where the file is coming from, hence we preserve the [path]
-              name: '[path][name].[ext]?hash=[hash:20]',
-              limit: 8192
-            }
-          }
-        ]
+              name: '[path][name].[ext]',
+              limit: 10000,
+            },
+          },
+          'img-loader',
+        ],
       },
       {
         test: /\.hbs$/,
         use: 'handlebars-loader'
-      }
+      },
+      {
+        test: /\.woff(2)?(\?[a-z0-9#=&.]+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+              limit: 10000,
+              mimetype: 'application/font-woff',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
     ]
   },
 
@@ -70,19 +95,16 @@ module.exports = {
     ]),
     new HtmlWebpackPlugin({
       template: './src/page-index/tmpl.html',
-      inject: true,
       chunks: ['index'],
       filename: 'index.html'
     }),
     new HtmlWebpackPlugin({
       template: './src/page-about/tmpl.html',
-      inject: true,
       chunks: ['about'],
       filename: 'about.html'
     }),
     new HtmlWebpackPlugin({
       template: './src/page-contacts/tmpl.html',
-      inject: true,
       chunks: ['contacts'],
       filename: 'contacts.html'
     }),
